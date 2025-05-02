@@ -19,14 +19,3 @@ export default {
     // require("tailwindcss-animatecss"),
   ],
 };
-
-// export default {
-//     content: [
-//       "./index.html",
-//       "./src/**/*.{js,ts,jsx,tsx}",
-//     ],
-//     theme: {
-//       extend: {},
-//     },
-//     plugins: [],
-//   }
