@@ -121,7 +121,7 @@ const ResultCard = ({ result }) => {
               </span>
             )}
           </h4>
-          <p className="text-gray-700 mb-3">{getExplanation()}</p>
+          <p className="!text-slate-100 mb-3">{getExplanation()}</p>
 
           {getRecommendation() && (
             <div className="mb-3  rounded-md ">
@@ -136,10 +136,10 @@ const ResultCard = ({ result }) => {
             <div className={showDetails ? "block" : "hidden"}>
               <div className="flex flex-wrap gap-4">
                 <div>
-                  <p className="font-semibold text-black/80 mb-2">
+                  <p className="font-semibold text-slate-100 mb-2">
                     Suspicious indicators detected:
                   </p>
-                  <ul className="list-disc list-inside text-gray-600 pl-2">
+                  <ul className="list-disc list-inside text-slate-100 pl-2">
                     {getSuspiciousIndicators().map((indicator, index) => (
                       <li key={index} className="mb-1">
                         {indicator}
