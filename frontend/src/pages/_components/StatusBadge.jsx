@@ -3,8 +3,7 @@ export default function StatusBadge({ status }) {
     switch (status) {
       case "Safe":
         return "!bg-green-500 !text-white";
-      // case "Suspicious":
-      //   return "bg-yellow-100 text-yellow-800";
+
       case "Scam":
         return "!bg-red-500 text-red-800";
       default:

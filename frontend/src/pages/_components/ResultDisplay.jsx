@@ -162,7 +162,11 @@ const ResultCard = ({ result }) => {
   };
 
   const getExplanation = () => {
-    return result?.explanation || "No detailed explanation available.";
+    return (
+      result?.explanation ||
+      result?.reason ||
+      "No detailed explanation available."
+    );
   };
 
   const getRecommendation = () => {
@@ -203,6 +207,18 @@ const ResultCard = ({ result }) => {
         return "bg-gray-500 px-2 text-slate-100 py-1 rounded-full";
     }
   };
+  const getRiskColor = () => {
+    switch (result?.risk) {
+      case "low":
+        return "bg-green-500 px-2 py-1 text-slate-100 rounded-full";
+      case "medium":
+        return " bg-yellow-500 px-2 text-slate-100 py-1 rounded-full";
+      case "high":
+        return " bg-red-500 px-2 text-slate-100 py-1 rounded-full";
+      default:
+        return "bg-gray-500 px-2 text-slate-100 py-1 rounded-full";
+    }
+  };
   const getStatusText = () => {
     switch (status) {
       case "safe":
@@ -232,15 +248,10 @@ const ResultCard = ({ result }) => {
   const playVoiceFeedback = () => {
     setIsPlaying(true);
 
-    // In a real implementation, this would call your TTS service
-    // For now, we'll just simulate the voice feedback
     const message = `${getStatusText()}. ${getExplanation()} ${getRecommendation()}`;
 
-    // This is just a placeholder for the TTS functionality
-    // You would replace this with actual TTS API call
     console.log("Playing voice feedback:", message);
 
-    // Simulate the voice playback time
     setTimeout(() => {
       setIsPlaying(false);
     }, 3000);
@@ -262,6 +273,11 @@ const ResultCard = ({ result }) => {
                 {getConfidenceScore()} confidence
               </span>
             )}
+            {result?.risk && (
+              <span className={`!font-normal text-sm ${getRiskColor()}`}>
+                {result?.risk}
+              </span>
+            )}
           </h4>
           <p className="text-slate-200 mb-3">{getExplanation()}</p>
 
@@ -276,16 +292,38 @@ const ResultCard = ({ result }) => {
 
           {getSuspiciousIndicators().length > 0 && (
             <div className={showDetails ? "block" : "hidden"}>
-              <p className="font-semibold text-slate-200 mb-2">
-                Suspicious indicators detected:
-              </p>
-              <ul className="list-disc list-inside text-slate-300 pl-2">
-                {getSuspiciousIndicators().map((indicator, index) => (
-                  <li key={index} className="mb-1">
-                    {indicator}
-                  </li>
-                ))}
-              </ul>
+              <div className="flex flex-wrap">
+                <div>
+                  <p className="font-semibold text-slate-200 mb-2">
+                    Suspicious indicators detected:
+                  </p>
+                  <ul className="list-disc list-inside text-slate-300 pl-2">
+                    {getSuspiciousIndicators().map((indicator, index) => (
+                      <li key={index} className="mb-1">
+                        {indicator}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  {result?.transcriptAnalysis?.suspiciousElements && (
+                    <div>
+                      <p className="font-semibold text-slate-200 mb-2">
+                        Suspicious Element detected:
+                      </p>
+                      <ul className="list-disc list-inside text-slate-300 pl-2">
+                        {result?.transcriptAnalysis?.suspiciousElements?.map(
+                          (indicator, index) => (
+                            <li key={index} className="mb-1">
+                              {indicator}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
 
@@ -301,11 +339,7 @@ const ResultCard = ({ result }) => {
             </button>
           )}
         </div>
-        {/* {result.audioResponse && ( */}
         <div className=" mt-4">
-          {/* <h3 className="text-sm font-medium text-slate-200 mb-2">
-            Audio Feedback:
-          </h3> */}
           <div className="flex items-center">
             <button
               //             // onClick={handleAudioPlay}
