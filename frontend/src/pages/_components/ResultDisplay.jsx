@@ -109,7 +109,9 @@ const ResultCard = ({ result }) => {
               {result?.risk ? getRiskStatusText() : getStatusText()}
             </span>
             {getConfidenceScore() && (
-              <span className="ml-2 text-sm !bg-[#2a2a2e] px-2 py-1 rounded-full text-slate-100 font-medium">
+              <span
+                className={`ml-2 text-sm !bg-gray-100 px-2 py-1 rounded-full text-black/65 font-medium `}
+              >
                 {getConfidenceScore()} confidence
               </span>
             )}
@@ -119,7 +121,7 @@ const ResultCard = ({ result }) => {
               </span>
             )}
           </h4>
-          <p className="text-slate-200 mb-3">{getExplanation()}</p>
+          <p className="text-gray-700 mb-3">{getExplanation()}</p>
 
           {getRecommendation() && (
             <div className="mb-3  rounded-md ">
@@ -134,10 +136,10 @@ const ResultCard = ({ result }) => {
             <div className={showDetails ? "block" : "hidden"}>
               <div className="flex flex-wrap gap-4">
                 <div>
-                  <p className="font-semibold text-slate-200 mb-2">
+                  <p className="font-semibold text-black/80 mb-2">
                     Suspicious indicators detected:
                   </p>
-                  <ul className="list-disc list-inside text-slate-300 pl-2">
+                  <ul className="list-disc list-inside text-gray-600 pl-2">
                     {getSuspiciousIndicators().map((indicator, index) => (
                       <li key={index} className="mb-1">
                         {indicator}

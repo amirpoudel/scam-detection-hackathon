@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import { Shield } from "lucide-react";
 import { Card, CardContent } from "../_fetchWrapper/ui/card";
 export default function Home() {
-  const [inputType, setInputType] = useState("text");
+  const [inputType, setInputType] = useState("url");
   const [inputText, setInputText] = useState("");
   const [url, setUrl] = useState("");
   const [audioFile, setAudioFile] = useState(null);
