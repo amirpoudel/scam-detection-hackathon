@@ -14,8 +14,8 @@ export default function AudioInput({ audioFile, setAudioFile, fileInputRef }) {
 
   return (
     <div className="mb-4">
-      <label className="block text-sm font-medium text-slate-200 mb-2">
-        WhatsApp Voice Message
+      <label className="block text-base font-medium text-black/75 mb-2">
+        Voice Message
       </label>
       <input
         type="file"
@@ -31,7 +31,7 @@ export default function AudioInput({ audioFile, setAudioFile, fileInputRef }) {
         {audioFile ? (
           <p className="text-blue-600">{audioFile.name}</p>
         ) : (
-          <p className="text-slate-200">Click to upload voice message</p>
+          <p className="text-gray-500">Click to upload voice message</p>
         )}
       </div>
       {audioFile && (

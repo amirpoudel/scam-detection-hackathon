@@ -1,7 +1,10 @@
 export default function UrlInput({ url, setUrl }) {
   return (
     <div className="mb-4">
-      <label htmlFor="url" className="block text-sm font-medium text-black ">
+      <label
+        htmlFor="url"
+        className="block text-sm font-medium text-black mb-1 "
+      >
         URL
       </label>
       <input

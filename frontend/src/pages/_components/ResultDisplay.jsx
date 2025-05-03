@@ -85,7 +85,7 @@ const ResultCard = ({ result }) => {
 
   return (
     <div
-      className={`border-2 !bg-[#1A1A1A] rounded-lg p-4 mb-4 ${getCardClass()}`}
+      className={`border-2 !bg-white text-black rounded-lg p-4 mb-4 ${getCardClass()}`}
     >
       <div className="flex flex-col justify-between items-start">
         <div className="flex-grow">
@@ -94,7 +94,9 @@ const ResultCard = ({ result }) => {
               {getStatusText()}
             </span>
             {getConfidenceScore() && (
-              <span className="ml-2 text-sm !bg-[#2a2a2e] px-2 py-1 rounded-full text-slate-100 font-medium">
+              <span
+                className={`ml-2 text-sm !bg-gray-100 px-2 py-1 rounded-full text-black/65 font-medium `}
+              >
                 {getConfidenceScore()} confidence
               </span>
             )}
@@ -104,10 +106,10 @@ const ResultCard = ({ result }) => {
               </span>
             )}
           </h4>
-          <p className="text-slate-200 mb-3">{getExplanation()}</p>
+          <p className="text-gray-700 mb-3">{getExplanation()}</p>
 
           {getRecommendation() && (
-            <div className="mb-3 bg-[#1A1A1A] p-3 rounded-md border border-indigo-200">
+            <div className="mb-3 bg-white shadow-sm p-3 rounded-md border border-indigo-200">
               <p className="text-indigo-600 font-semibold text-sm">
                 Recommendation:
               </p>
@@ -119,10 +121,10 @@ const ResultCard = ({ result }) => {
             <div className={showDetails ? "block" : "hidden"}>
               <div className="flex flex-wrap">
                 <div>
-                  <p className="font-semibold text-slate-200 mb-2">
+                  <p className="font-semibold text-black/80 mb-2">
                     Suspicious indicators detected:
                   </p>
-                  <ul className="list-disc list-inside text-slate-300 pl-2">
+                  <ul className="list-disc list-inside text-gray-600 pl-2">
                     {getSuspiciousIndicators().map((indicator, index) => (
                       <li key={index} className="mb-1">
                         {indicator}
@@ -153,15 +155,15 @@ const ResultCard = ({ result }) => {
           )}
 
           {getSuspiciousIndicators().length > 0 && (
-            <button
-              className="!bg-green-600 hover:text-green-800 text-sm font-medium mt-2 flex items-center rounded-md"
+            <div
+              className=" text-sm font-medium mt-2 flex items-center rounded-md text-gray-500 cursor-pointer"
               onClick={() => setShowDetails(!showDetails)}
             >
               {showDetails ? "Hide details" : "Show details"}
               <i
                 className={`fas fa-chevron-${showDetails ? "up" : "down"} ml-1`}
               ></i>
-            </button>
+            </div>
           )}
         </div>
         {getExplanation() && (

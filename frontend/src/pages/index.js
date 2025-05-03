@@ -9,9 +9,10 @@ import HowItWorks from "./_components/HowItWorks";
 import UrlInput from "./_components/UrlInput";
 import { post } from "../_fetchWrapper";
 import ResultCard from "./_components/ResultDisplay";
+import ScamTipCard from "./_components/scamTip";
 
 export default function Home() {
-  const [inputType, setInputType] = useState("text");
+  const [inputType, setInputType] = useState("url");
   const [inputText, setInputText] = useState("");
   const [url, setUrl] = useState("");
   const [audioFile, setAudioFile] = useState(null);
@@ -109,7 +110,7 @@ export default function Home() {
 
       <main className="container mx-auto py-8 w-full flex flex-row gap-8">
         <InputSelector inputType={inputType} setInputType={setInputType} />
-        <div>
+        <div className="w-full">
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             <form onSubmit={handleSubmit}>
               {inputType === "text" && (
@@ -129,7 +130,7 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={isSubmitDisabled()}
-                    className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className={`w-fit !bg-[#4D55CC] text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {loading
                       ? "Analyzing..."
@@ -139,7 +140,7 @@ export default function Home() {
                     type="button"
                     disabled={isSubmitDisabled()}
                     onClick={(e) => handleSubmitQuickResponse(e)}
-                    className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className={`w-fit !bg-[#4D55CC] text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {loading ? "Analyzing..." : "Quick Response"}
                   </button>
@@ -157,6 +158,8 @@ export default function Home() {
           </div>
 
           {result && <ResultCard result={result || {}} />}
+          <div className="mt-5 "></div>
+          <ScamTipCard />
           <HowItWorks />
         </div>
       </main>
