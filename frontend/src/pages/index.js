@@ -9,7 +9,9 @@ import HowItWorks from "./_components/HowItWorks";
 import UrlInput from "./_components/UrlInput";
 import { post } from "../_fetchWrapper";
 import ResultCard from "./_components/ResultDisplay";
-
+import { motion } from "framer-motion";
+import { Shield } from "lucide-react";
+import { Card, CardContent } from "../_fetchWrapper/ui/card";
 export default function Home() {
   const [inputType, setInputType] = useState("text");
   const [inputText, setInputText] = useState("");
@@ -71,14 +73,9 @@ export default function Home() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("response", response);
       setResult(JSON.parse(response.message));
     } catch (error) {
       console.error("Error analyzing content:", error);
-      setResult({
-        status: "error",
-        message: "Failed to analyze content. Please try again.",
-      });
     } finally {
       setLoading(false);
     }
@@ -92,7 +89,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black ">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
       <Head>
         <title>Multilingual Scam Detection</title>
         <meta
@@ -108,53 +105,106 @@ export default function Home() {
       <Header />
 
       <main className="container mx-auto px-4 py-8 lg:w-[70dvw] md:w-[90dvw] sm:w-full">
-        <div className="bg-[#1A1A1A] rounded-lg shadow-md p-6 mb-8">
-          <InputSelector inputType={inputType} setInputType={setInputType} />
+        <section className="py-12 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center"
+          >
+            <div className="p-3 bg-blue-600/20 rounded-full mb-4">
+              <Shield className="h-10 w-10 text-blue-500" />
+            </div>
+            <h1
+              style={{
+                fontSize: "40px",
+                "@media(min-width: 768px)": { fontSize: "5xl" },
+                fontWeight: "bold",
+                backgroundClip: "text",
+                color: "transparent",
+                backgroundImage: "linear-gradient(to right, #60a5fa, #a78bfa)",
+                marginBottom: "1rem",
+              }}
+            >
+              Multilingual Scam Detection
+            </h1>
+            <p className="text-lg text-slate-300 max-w-2xl mb-8">
+              Protect yourself from harmful messages, voice notes, and
+              suspicious websites — with support for multiple languages.
+            </p>
+          </motion.div>
+        </section>
 
-          <form onSubmit={handleSubmit}>
-            {inputType === "text" && (
-              <TextInput inputText={inputText} setInputText={setInputText} />
-            )}
-            {inputType === "url" && <UrlInput url={url} setUrl={setUrl} />}
-            {inputType === "audio" && (
-              <AudioInput
-                audioFile={audioFile}
-                setAudioFile={setAudioFile}
-                fileInputRef={fileInputRef}
-              />
-            )}
+        <section className="max-w-3xl mx-auto mb-16">
+          <Card className="border border-slate-800 bg-slate-900/50 backdrop-blur-sm shadow-lg">
+            <CardContent className="pt-6">
+              <div className="rounded-lg shadow-md p-6 mb-8">
+                <InputSelector
+                  inputType={inputType}
+                  setInputType={setInputType}
+                />
 
-            {inputType === "audio" ? (
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  disabled={isSubmitDisabled()}
-                  className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
-                >
-                  {loading ? "Analyzing..." : "Check for Full Response  Scams"}
-                </button>
-                <button
-                  type="button"
-                  disabled={isSubmitDisabled()}
-                  onClick={(e) => handleSubmitQuickResponse(e)}
-                  className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
-                >
-                  {loading ? "Analyzing..." : "Quick Response"}
-                </button>
+                <form onSubmit={handleSubmit}>
+                  {inputType === "text" && (
+                    <TextInput
+                      inputText={inputText}
+                      setInputText={setInputText}
+                    />
+                  )}
+                  {inputType === "url" && (
+                    <UrlInput url={url} setUrl={setUrl} />
+                  )}
+                  {inputType === "audio" && (
+                    <AudioInput
+                      audioFile={audioFile}
+                      setAudioFile={setAudioFile}
+                      fileInputRef={fileInputRef}
+                    />
+                  )}
+
+                  {inputType === "audio" ? (
+                    <div className="flex gap-2">
+                      <button
+                        type="submit"
+                        disabled={isSubmitDisabled()}
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-md disabled:opacity-50"
+                      >
+                        {loading
+                          ? "Analyzing..."
+                          : "Check for Full Response  Scams"}
+                      </button>
+                      <button
+                        type="button"
+                        disabled={isSubmitDisabled()}
+                        onClick={(e) => handleSubmitQuickResponse(e)}
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-md disabled:opacity-50"
+                      >
+                        {loading ? "Analyzing..." : "Quick Response"}
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={isSubmitDisabled()}
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-md disabled:opacity-50"
+                    >
+                      {loading ? "Analyzing..." : "Check for Scams"}
+                    </button>
+                  )}
+                </form>
               </div>
-            ) : (
-              <button
-                type="submit"
-                disabled={isSubmitDisabled()}
-                className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {loading ? "Analyzing..." : "Check for Scams"}
-              </button>
-            )}
-          </form>
-        </div>
-
-        {result && <ResultCard result={result || {}} />}
+              {result && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 p-4 rounded-lg border bg-slate-800/50 border-slate-700"
+                >
+                  <ResultCard result={result || {}} />
+                </motion.div>
+              )}
+            </CardContent>
+          </Card>
+        </section>
         <HowItWorks />
       </main>
 

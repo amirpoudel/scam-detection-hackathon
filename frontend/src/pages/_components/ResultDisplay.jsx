@@ -1,10 +1,11 @@
+"use client";
 import { useState } from "react";
 import PhishingExplanationAudio from "./TextToSpeech";
 
 const ResultCard = ({ result }) => {
   const [showDetails, setShowDetails] = useState(false);
   const getStatus = () => {
-    if (result?.phishingLikelihood || result?.isSafe) {
+    if (result?.phishingLikelihood) {
       return result?.isSafe
         ? "safe"
         : result?.phishingLikelihood === "High"
@@ -13,6 +14,10 @@ const ResultCard = ({ result }) => {
     }
 
     return result?.status || "";
+  };
+
+  const getRiskStatus = () => {
+    return result?.isSafe ? "safe" : "scam";
   };
 
   const getExplanation = () => {
@@ -32,7 +37,7 @@ const ResultCard = ({ result }) => {
   };
 
   const status = getStatus();
-
+  const riskStatus = getRiskStatus();
   const getStatusIcon = () => {
     switch (status) {
       case "safe":
@@ -46,7 +51,7 @@ const ResultCard = ({ result }) => {
     }
   };
   const getRiskColor = () => {
-    switch (result?.risk) {
+    switch (result?.isSafe) {
       case "low":
         return "bg-green-500 px-2 py-1 text-slate-100 rounded-full";
       case "medium":
@@ -59,6 +64,18 @@ const ResultCard = ({ result }) => {
   };
   const getStatusText = () => {
     switch (status) {
+      case "safe":
+        return "Safe";
+      case "suspicious":
+        return "Suspicious";
+      case "scam":
+        return "Scam Detected";
+      default:
+        return "Unknown";
+    }
+  };
+  const getRiskStatusText = () => {
+    switch (riskStatus) {
       case "safe":
         return "Safe";
       case "suspicious":
@@ -84,14 +101,12 @@ const ResultCard = ({ result }) => {
   };
 
   return (
-    <div
-      className={`border-2 !bg-[#1A1A1A] rounded-lg p-4 mb-4 ${getCardClass()}`}
-    >
+    <div className={` rounded-lg p-4 mb-4`}>
       <div className="flex flex-col justify-between items-start">
         <div className="flex-grow">
           <h4 className="font-bold text-lg mb-2 flex items-center">
             <span className={`!font-normal text-sm ${getStatusIcon()}`}>
-              {getStatusText()}
+              {result?.risk ? getRiskStatusText() : getStatusText()}
             </span>
             {getConfidenceScore() && (
               <span className="ml-2 text-sm !bg-[#2a2a2e] px-2 py-1 rounded-full text-slate-100 font-medium">
@@ -107,7 +122,7 @@ const ResultCard = ({ result }) => {
           <p className="text-slate-200 mb-3">{getExplanation()}</p>
 
           {getRecommendation() && (
-            <div className="mb-3 bg-[#1A1A1A] p-3 rounded-md border border-indigo-200">
+            <div className="mb-3  rounded-md ">
               <p className="text-indigo-600 font-semibold text-sm">
                 Recommendation:
               </p>
@@ -117,7 +132,7 @@ const ResultCard = ({ result }) => {
 
           {getSuspiciousIndicators().length > 0 && (
             <div className={showDetails ? "block" : "hidden"}>
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap gap-4">
                 <div>
                   <p className="font-semibold text-slate-200 mb-2">
                     Suspicious indicators detected:
@@ -154,7 +169,7 @@ const ResultCard = ({ result }) => {
 
           {getSuspiciousIndicators().length > 0 && (
             <button
-              className="!bg-green-600 hover:text-green-800 text-sm font-medium mt-2 flex items-center rounded-md"
+              className="!bg-green-600 hover:text-green-800 text-sm font-medium mt-2 flex items-center rounded-md "
               onClick={() => setShowDetails(!showDetails)}
             >
               {showDetails ? "Hide details" : "Show details"}

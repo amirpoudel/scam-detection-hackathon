@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://100.24.119.178:8000/api/v1/",
+  baseURL: "https://amazed-polliwog-solely.ngrok-free.app/api/v1/",
   timeout: 500000,
 });
 

@@ -1,12 +1,32 @@
-export default function Header() {
+import { Shield } from "lucide-react";
+import Link from "next/link";
+
+const Header = () => {
   return (
-    <header className="bg-[#1A1A1A] text-slate-200 py-6 text-center">
-      <div className="container mx-auto px-4 lg:w-[70dvw] md:w-[90dvw] sm:w-full">
-        <h1 className="text-3xl font-bold !text-slate-200">
-          Multilingual Scam Detection
-        </h1>
-        <p className="mt-2">Protect yourself from WhatsApp and website scams</p>
+    <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Shield className="h-6 w-6 text-blue-500" />
+          <span className="font-bold text-white text-lg">ScamShield</span>
+        </div>
+
+        <nav className="hidden md:flex items-center gap-6">
+          <Link
+            href="#how-it-works"
+            className="text-slate-300 hover:text-white transition-colors"
+          >
+            How It Works
+          </Link>
+          <Link
+            href="#"
+            className="text-slate-300 hover:text-white transition-colors"
+          >
+            About
+          </Link>
+        </nav>
       </div>
     </header>
   );
-}
+};
+
+export default Header;

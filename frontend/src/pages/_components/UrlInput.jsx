@@ -1,16 +1,10 @@
 export default function UrlInput({ url, setUrl }) {
   return (
     <div className="mb-4">
-      <label
-        htmlFor="url"
-        className="block text-sm font-medium text-slate-200 mb-2"
-      >
-        Website URL
-      </label>
       <input
         type="url"
         id="url"
-        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none placeholder:text-slate-200 text-slate-200"
+        className="pl-10 bg-slate-800/50 border-slate-700 placeholder:text-slate-500 w-full px-2 py-2 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
         placeholder="Enter suspicious website URL..."
         value={url}
         onChange={(e) => setUrl(e.target.value)}
