@@ -5,7 +5,6 @@ export default function Header() {
         <h1 className="text-3xl font-bold !text-slate-200">
           Multilingual Scam Detection
         </h1>
-        <p className="mt-2">Protect yourself from WhatsApp and website scams</p>
       </div>
     </header>
   );
