@@ -1,4 +1,3 @@
-// src/components/DetectionResult.js
 import React from "react";
 
 const DetectionResult = ({ result, isLoading }) => {

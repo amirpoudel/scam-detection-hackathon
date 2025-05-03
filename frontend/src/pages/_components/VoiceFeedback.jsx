@@ -1,8 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-// src/components/VoiceFeedback.js
 import React from "react";
-// import Speech from "react-speech";
 const Speech = dynamic(() => import("react-speech"), { ssr: false });
 
 const VoiceFeedback = ({ result }) => {

@@ -17,11 +17,9 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
   const audioElementRef = useRef(null);
   const timerRef = useRef(null);
 
-  // Set up audio element reference
   useEffect(() => {
     audioElementRef.current = new Audio();
 
-    // Add event listeners
     audioElementRef.current.addEventListener("ended", () => {
       setIsPlaying(false);
     });
@@ -52,11 +50,9 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
     };
   }, []);
 
-  // Start recording function
   const startRecording = async () => {
     setLoading(true);
     try {
-      // Reset any previous recording
       if (audioURL) {
         URL.revokeObjectURL(audioURL);
         setAudioURL("");
@@ -80,11 +76,9 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
         const url = URL.createObjectURL(audioBlob);
         setAudioURL(url);
 
-        // Store the final recording duration
         const finalDuration = recordingTime;
         setDuration(finalDuration);
 
-        // Create audio element to get precise duration when possible
         const tempAudio = new Audio(url);
         tempAudio.addEventListener("loadedmetadata", () => {
           if (tempAudio.duration !== Infinity) {
@@ -96,16 +90,13 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
           onRecordingComplete(audioBlob, finalDuration);
         }
 
-        // Stop all tracks from the stream
         stream.getTracks().forEach((track) => track.stop());
       };
 
-      // Start recording
       mediaRecorderRef.current.start();
       setIsRecording(true);
       setRecordingTime(0);
 
-      // Start timer
       timerRef.current = setInterval(() => {
         setRecordingTime((prevTime) => prevTime + 1);
       }, 1000);
@@ -116,7 +107,6 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
     }
   };
 
-  // Stop recording function
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
@@ -125,7 +115,6 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
     }
   };
 
-  // Play/pause audio function
   const togglePlayback = () => {
     if (!audioURL) return;
 
@@ -139,7 +128,6 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
     }
   };
 
-  // Delete recording function
   const deleteRecording = () => {
     if (audioURL) {
       URL.revokeObjectURL(audioURL);
@@ -154,7 +142,6 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
     }
   };
 
-  // Format time for display (MM:SS)
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -163,7 +150,6 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
       .padStart(2, "0")}`;
   };
 
-  // Download the recording
   const downloadRecording = () => {
     if (!audioURL) return;
 
@@ -177,9 +163,7 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
 
   return (
     <div className="flex flex-col space-y-4 w-full">
-      {/* Recording interface */}
       <div className="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg">
-        {/* Record/Stop button */}
         <button
           onClick={isRecording ? stopRecording : startRecording}
           className={`p-3 rounded-full transition-colors ${
@@ -199,7 +183,6 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
           )}
         </button>
 
-        {/* Timer/status */}
         <div className="flex-1">
           {isRecording ? (
             <div className="flex items-center">
@@ -234,7 +217,6 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
           )}
         </div>
 
-        {/* Playback controls (only shown when there's a recording) */}
         {audioURL && !isRecording && (
           <div className="flex space-x-2">
             <button
@@ -268,7 +250,6 @@ const VoiceRecorder = ({ onRecordingComplete }) => {
         )}
       </div>
 
-      {/* Status messages */}
       <div className="text-sm text-slate-200">
         {!navigator.mediaDevices ? (
           <span className="text-yellow-500">

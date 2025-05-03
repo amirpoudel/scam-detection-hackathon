@@ -144,7 +144,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black ">
       <Head>
         <title>Multilingual Scam Detection</title>
         <meta
@@ -155,7 +155,7 @@ export default function Home() {
 
       <Header />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 lg:w-[70dvw] md:w-[90dvw] sm:w-full">
         <div className="bg-[#1A1A1A] rounded-lg shadow-md p-6 mb-8">
           <InputSelector inputType={inputType} setInputType={setInputType} />
 
