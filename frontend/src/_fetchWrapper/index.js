@@ -3,7 +3,6 @@ import axios from "axios";
 const axiosInstance = axios.create({
   baseURL: "http://100.24.119.178:8000/api/v1/",
   timeout: 500000,
-  // headers: { "Content-Type": "application/json" },
 });
 
 export const post = async (
@@ -20,4 +19,3 @@ export const post = async (
     console.log("error on post", error);
   }
 };
-// http://100.24.119.178:8000/api/v1/scam/detect

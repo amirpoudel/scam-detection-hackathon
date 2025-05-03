@@ -14,7 +14,8 @@
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-speech": "^1.0.2"
+    "react-speech": "^1.0.2",
+    "react-speech-kit": "^3.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

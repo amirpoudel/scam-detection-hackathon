@@ -1,14 +1,10 @@
-// components/shared/ResultCard.jsx
-import { useRef, useState } from "react";
+import { useState } from "react";
+import PhishingExplanationAudio from "./TextToSpeech";
 
 const ResultCard = ({ result }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const audioRef = useRef(null);
-  // Handle API response structure
   const getStatus = () => {
-    // If we're using the new API response format
-    if (result?.phishingLikelihood) {
+    if (result?.phishingLikelihood || result?.isSafe) {
       return result?.isSafe
         ? "safe"
         : result?.phishingLikelihood === "High"
@@ -16,16 +12,11 @@ const ResultCard = ({ result }) => {
         : "suspicious";
     }
 
-    // If we're using the older/simpler format
-    return result?.status || "unknown";
+    return result?.status || "";
   };
 
   const getExplanation = () => {
-    return (
-      result?.explanation ||
-      result?.reason ||
-      "No detailed explanation available."
-    );
+    return result?.explanation || result?.reason || "";
   };
 
   const getRecommendation = () => {
@@ -42,18 +33,6 @@ const ResultCard = ({ result }) => {
 
   const status = getStatus();
 
-  // const getStatusIcon = () => {
-  //   switch (status) {
-  //     case "safe":
-  //       return <div className="w-4 h-4 rounded-full bg-green-500"></div>;
-  //     case "suspicious":
-  //       return <div className="w-4 h-4 rounded-full bg-yellow-500"></div>;
-  //     case "scam":
-  //       return <div className="w-4 h-4 rounded-full bg-red-500"></div>;
-  //     default:
-  //       return <div className="w-4 h-4 bg-gray-500"></div>;
-  //   }
-  // };
   const getStatusIcon = () => {
     switch (status) {
       case "safe":
@@ -104,18 +83,6 @@ const ResultCard = ({ result }) => {
     }
   };
 
-  const playVoiceFeedback = () => {
-    setIsPlaying(true);
-
-    const message = `${getStatusText()}. ${getExplanation()} ${getRecommendation()}`;
-
-    console.log("Playing voice feedback:", message);
-
-    setTimeout(() => {
-      setIsPlaying(false);
-    }, 3000);
-  };
-
   return (
     <div
       className={`border-2 !bg-[#1A1A1A] rounded-lg p-4 mb-4 ${getCardClass()}`}
@@ -123,7 +90,6 @@ const ResultCard = ({ result }) => {
       <div className="flex flex-col justify-between items-start">
         <div className="flex-grow">
           <h4 className="font-bold text-lg mb-2 flex items-center">
-            {/* <span className="mr-2">{getStatusIcon()}</span> */}
             <span className={`!font-normal text-sm ${getStatusIcon()}`}>
               {getStatusText()}
             </span>
@@ -198,61 +164,9 @@ const ResultCard = ({ result }) => {
             </button>
           )}
         </div>
-        <div className=" mt-4">
-          <div className="flex items-center">
-            <button
-              //             // onClick={handleAudioPlay}
-              className="!bg-green-600 text-white p-2 rounded-full !hover:bg-green-700 focus:outline-none"
-            >
-              {/* {audioPlaying ? ( */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {/* ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              )} */}
-            </button>
-            <span className="ml-2 text-sm text-slate-200">
-              Click to play audio feedback
-            </span>
-          </div>
-          <audio
-            ref={audioRef}
-            // src={result.audioResponse}
-            onEnded={() => setAudioPlaying(false)}
-            className="hidden"
-          />
-        </div>
+        {getExplanation() && (
+          <PhishingExplanationAudio explanation={getExplanation()} />
+        )}
       </div>
     </div>
   );
