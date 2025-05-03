@@ -92,7 +92,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black ">
+    <div className="min-h-screen bg-white ">
       <Head>
         <title>Multilingual Scam Detection</title>
         <meta
@@ -107,55 +107,58 @@ export default function Home() {
 
       <Header />
 
-      <main className="container mx-auto px-4 py-8 lg:w-[70dvw] md:w-[90dvw] sm:w-full">
-        <div className="bg-[#1A1A1A] rounded-lg shadow-md p-6 mb-8">
-          <InputSelector inputType={inputType} setInputType={setInputType} />
+      <main className="container mx-auto py-8 w-full flex flex-row gap-8">
+        <InputSelector inputType={inputType} setInputType={setInputType} />
+        <div>
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <form onSubmit={handleSubmit}>
+              {inputType === "text" && (
+                <TextInput inputText={inputText} setInputText={setInputText} />
+              )}
+              {inputType === "url" && <UrlInput url={url} setUrl={setUrl} />}
+              {inputType === "audio" && (
+                <AudioInput
+                  audioFile={audioFile}
+                  setAudioFile={setAudioFile}
+                  fileInputRef={fileInputRef}
+                />
+              )}
 
-          <form onSubmit={handleSubmit}>
-            {inputType === "text" && (
-              <TextInput inputText={inputText} setInputText={setInputText} />
-            )}
-            {inputType === "url" && <UrlInput url={url} setUrl={setUrl} />}
-            {inputType === "audio" && (
-              <AudioInput
-                audioFile={audioFile}
-                setAudioFile={setAudioFile}
-                fileInputRef={fileInputRef}
-              />
-            )}
-
-            {inputType === "audio" ? (
-              <div className="flex gap-2">
+              {inputType === "audio" ? (
+                <div className="flex gap-2">
+                  <button
+                    type="submit"
+                    disabled={isSubmitDisabled()}
+                    className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                  >
+                    {loading
+                      ? "Analyzing..."
+                      : "Check for Full Response  Scams"}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isSubmitDisabled()}
+                    onClick={(e) => handleSubmitQuickResponse(e)}
+                    className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                  >
+                    {loading ? "Analyzing..." : "Quick Response"}
+                  </button>
+                </div>
+              ) : (
                 <button
                   type="submit"
                   disabled={isSubmitDisabled()}
-                  className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`w-fit !bg-[#4D55CC] text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
-                  {loading ? "Analyzing..." : "Check for Full Response  Scams"}
+                  {loading ? "Analyzing..." : "Check for Scams"}
                 </button>
-                <button
-                  type="button"
-                  disabled={isSubmitDisabled()}
-                  onClick={(e) => handleSubmitQuickResponse(e)}
-                  className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
-                >
-                  {loading ? "Analyzing..." : "Quick Response"}
-                </button>
-              </div>
-            ) : (
-              <button
-                type="submit"
-                disabled={isSubmitDisabled()}
-                className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {loading ? "Analyzing..." : "Check for Scams"}
-              </button>
-            )}
-          </form>
-        </div>
+              )}
+            </form>
+          </div>
 
-        {result && <ResultCard result={result || {}} />}
-        <HowItWorks />
+          {result && <ResultCard result={result || {}} />}
+          <HowItWorks />
+        </div>
       </main>
 
       <Footer />

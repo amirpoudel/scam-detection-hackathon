@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://100.24.119.178:8000/api/v1/",
+  // baseURL: "http://100.24.119.178:8000/api/v1/",
+  baseURL: "http://hackathon.ashik.fm:8000/api/v1/",
   timeout: 500000,
 });
 

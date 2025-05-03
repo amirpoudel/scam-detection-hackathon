@@ -1,30 +1,39 @@
+import { MessageCircleMore, Link2, Mic } from "lucide-react";
+
 export default function InputSelector({ inputType, setInputType }) {
   return (
-    <div className="flex flex-wrap gap-2 items-center justify-center space-x-4 mb-6">
-      <button
+    <div className="flex flex-col max-w-[250px] w-full gap-2 space-x-4 mb-6 text-black/75">
+      <div className="text-base font-semibold text-black">
+        What would you like to scan?
+      </div>
+      <hr className="mt-1 mb-2" />
+      <div
         onClick={() => setInputType("text")}
-        className={`px-4 py-2 rounded-md ${
-          inputType === "text" ? "!bg-green-600 text-white" : "!bg-gray-600"
+        className={`px-4 py-3 rounded-md w-full flex gap-2 items-center cursor-pointer hover:bg-gray-100 transition-all ease-in-out duration-200 ${
+          inputType === "text" ? "!bg-gray-200 " : ""
         }`}
       >
-        Text Message
-      </button>
-      <button
+        <MessageCircleMore />
+        <span>Text Message</span>
+      </div>
+      <div
         onClick={() => setInputType("url")}
-        className={`px-4 py-2 rounded-md ${
-          inputType === "url" ? "!bg-green-600 text-white" : "!bg-gray-600"
+        className={`px-4 py-3 rounded-md flex gap-2 items-center cursor-pointer hover:bg-gray-100 transition-all ease-in-out duration-200 ${
+          inputType === "url" ? "!bg-gray-200" : ""
         }`}
       >
-        Website URL
-      </button>
-      <button
+        <Link2 />
+        <span>Website URL</span>
+      </div>
+      <div
         onClick={() => setInputType("audio")}
-        className={`px-4 py-2 rounded-md ${
-          inputType === "audio" ? "!bg-green-600 text-white" : "!bg-gray-600"
+        className={`px-4 py-3 rounded-md flex gap-2 items-center cursor-pointer hover:bg-gray-100 transition-all ease-in-out duration-200 ${
+          inputType === "audio" ? "!bg-gray-200" : ""
         }`}
       >
-        Voice Message
-      </button>
+        <Mic />
+        <span>Voice Message</span>
+      </div>
     </div>
   );
 }
