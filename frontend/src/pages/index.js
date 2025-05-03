@@ -9,7 +9,7 @@ import Header from "./_components/Header";
 import Footer from "./_components/Footer";
 import HowItWorks from "./_components/HowItWorks";
 import UrlInput from "./_components/UrlInput";
-import { post } from "./_fetchWrapper";
+import { post } from "../_fetchWrapper";
 import ResultCard from "./_components/ResultDisplay";
 
 export default function Home() {
