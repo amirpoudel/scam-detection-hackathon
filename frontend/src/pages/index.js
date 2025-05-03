@@ -11,6 +11,7 @@ import Footer from "./_components/Footer";
 import HowItWorks from "./_components/HowItWorks";
 import UrlInput from "./_components/UrlInput";
 import { post } from "./_fetchWrapper";
+import ResultCard from "./_components/ResultDisplay";
 
 export default function Home() {
   const [inputType, setInputType] = useState("text");
@@ -22,6 +23,20 @@ export default function Home() {
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const fileInputRef = useRef(null);
+  const results = {
+    phishingLikelihood: "High",
+    confidenceScore: 95,
+    suspiciousIndicators: [
+      "Offers that seem too good to be true",
+      "Requesting sensitive information",
+      "Unusual requests or instructions",
+    ],
+    explanation:
+      "The message promises a large sum of money, which is a common tactic used in phishing attempts to lure victims. It also requests for a payment to collect the prize, which is a suspicious request. The message does not provide any legitimate source or organization, making it highly suspicious.",
+    safetyRecommendation:
+      "Do not respond to the message or send any money. Report the message to your service provider.",
+    isSafe: false,
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -79,6 +94,10 @@ export default function Home() {
           name="description"
           content="Detect scams in WhatsApp messages and websites"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        ></link>
       </Head>
 
       <Header />
@@ -115,13 +134,14 @@ export default function Home() {
           </form>
         </div>
 
-        {result && (
-          <ResultDisplay
-            result={result}
-            audioPlaying={audioPlaying}
-            setAudioPlaying={setAudioPlaying}
-          />
-        )}
+        {/* {result && ( */}
+        {/* <ResultDisplay
+          result={result}
+          audioPlaying={audioPlaying}
+          setAudioPlaying={setAudioPlaying}
+        /> */}
+        <ResultCard result={results} />
+        {/* )} */}
 
         <HowItWorks />
       </main>
