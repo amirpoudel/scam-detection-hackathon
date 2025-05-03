@@ -12,10 +12,10 @@ export const verifyWhatsappWebhook = asyncHandler(async (req: Request, res: Resp
     const challenge = req.query['hub.challenge'];
 
     if (mode === 'subscribe' && token === process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN) {
-        console.log('✅ Whatsapp Webhook Verified');
+        console.log('Whatsapp Webhook Verified');
         return res.status(200).send(challenge);
     } else {
-        console.log('❌ Webhook Verification Failed');
+        console.log('Webhook Verification Failed');
         return res.sendStatus(403);
     }
 });
@@ -35,9 +35,10 @@ export const whatsappWebhook = asyncHandler(async (req: Request, res: Response) 
                 //handleMessage(senderPsid, webhookEvent.message);
                 webhookEvent.messages.forEach(async(message: any) => {
                     console.log(message.text.body)
-                    // const replyMessage = await replyChatWithSession(message.from,message.text.body)
-                    // console.log("Reply Message", replyMessage)
-                    // // send message
+                    //text scam detection . if scam the reply to the chat with flag
+
+
+                    
                     // const response = await sendWhatsAppTextReply(webhookEvent.metadata.phone_number_id,message.from,replyMessage)
                     // console.log("Whatsapp response", response)
 
