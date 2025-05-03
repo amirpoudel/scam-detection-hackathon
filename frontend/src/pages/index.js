@@ -19,6 +19,7 @@ export default function Home() {
   const [audioFile, setAudioFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingQuickResponse, setLoadingQuickResponse] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleSubmit = async (e) => {
@@ -61,7 +62,7 @@ export default function Home() {
   };
   const handleSubmitQuickResponse = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoadingQuickResponse(true);
     setResult(null);
 
     try {
@@ -77,7 +78,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error analyzing content:", error);
     } finally {
-      setLoading(false);
+      setLoadingQuickResponse(false);
     }
   };
   const isSubmitDisabled = () => {
@@ -176,10 +177,15 @@ export default function Home() {
                       <button
                         type="button"
                         disabled={isSubmitDisabled()}
-                        onClick={(e) => handleSubmitQuickResponse(e)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSubmitQuickResponse(e);
+                        }}
                         className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-md disabled:opacity-50"
                       >
-                        {loading ? "Analyzing..." : "Quick Response"}
+                        {loadingQuickResponse
+                          ? "Analyzing..."
+                          : "Quick Response"}
                       </button>
                     </div>
                   ) : (
