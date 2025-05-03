@@ -1,16 +1,23 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://some-domain.com/api/",
-  timeout: 1000,
-  headers: { "X-Custom-Header": "foobar" },
+  baseURL: "http://100.24.119.178:8000/api/v1/",
+  timeout: 500000,
+  // headers: { "Content-Type": "application/json" },
 });
 
-export const post = (url, data) => {
+export const post = async (
+  url,
+  data,
+  headers = { "Content-Type": "application/json" }
+) => {
   try {
-    const response = axiosInstance.post(url, data);
-    return response;
+    const response = await axiosInstance.post(url, data, {
+      headers,
+    });
+    return response?.data;
   } catch (error) {
     console.log("error on post", error);
   }
 };
+// http://100.24.119.178:8000/api/v1/scam/detect

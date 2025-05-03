@@ -5,7 +5,6 @@ import LanguageSelector from "./_components/LanguageSelector";
 import AudioInput from "./_components/AudioInput";
 import TextInput from "./_components/TextInput";
 import InputSelector from "./_components/InputSelector";
-import ResultDisplay from "./_components/ResultDisplay";
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
 import HowItWorks from "./_components/HowItWorks";
@@ -45,28 +44,29 @@ export default function Home() {
     try {
       let response;
       if (inputType === "text") {
-        response = await post("/scam/detect/text", {
+        response = await post("scam/detect/text", {
           text: inputText,
-          language: selectedLanguage,
+          // language: selectedLanguage,
         });
+        console.log("response", JSON.parse(response.message));
       } else if (inputType === "url") {
-        response = await post("/link", {
-          url: url,
-          language: selectedLanguage,
+        response = await post("scam/detect/link", {
+          link: url,
+          // language: selectedLanguage,
         });
       } else if (inputType === "audio") {
         const formData = new FormData();
         formData.append("audio", audioFile);
-        formData.append("language", selectedLanguage);
+        // formData.append("language", selectedLanguage);
 
-        response = await post("/audio", formData, {
+        response = await post("scam/detect/audio", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
       }
 
-      setResult(response.data);
+      setResult(JSON.parse(response.message));
     } catch (error) {
       console.error("Error analyzing content:", error);
       setResult({
@@ -77,7 +77,33 @@ export default function Home() {
       setLoading(false);
     }
   };
+  const handleSubmitQuickResponse = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setResult(null);
 
+    try {
+      const formData = new FormData();
+      formData.append("audio", audioFile);
+      // formData.append("language", selectedLanguage);
+
+      const response = await post("scam/detect/audio/quick", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("response", response);
+      setResult(JSON.parse(response.message));
+    } catch (error) {
+      console.error("Error analyzing content:", error);
+      setResult({
+        status: "error",
+        message: "Failed to analyze content. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   const isSubmitDisabled = () => {
     if (loading) return true;
     if (inputType === "text" && !inputText) return true;
@@ -134,8 +160,9 @@ export default function Home() {
                   {loading ? "Analyzing..." : "Check for Scams"}
                 </button>
                 <button
-                  type="submit"
+                  type="button"
                   disabled={isSubmitDisabled()}
+                  onClick={(e) => handleSubmitQuickResponse(e)}
                   className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {loading ? "Analyzing..." : "Quick Response"}
@@ -153,14 +180,7 @@ export default function Home() {
           </form>
         </div>
 
-        {/* {result && ( */}
-        {/* <ResultDisplay
-          result={result}
-          audioPlaying={audioPlaying}
-          setAudioPlaying={setAudioPlaying}
-        /> */}
-        <ResultCard result={results} />
-        {/* )} */}
+        {result && <ResultCard result={result || results} />}
 
         <HowItWorks />
       </main>
