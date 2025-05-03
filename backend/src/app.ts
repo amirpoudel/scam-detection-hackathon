@@ -45,9 +45,11 @@ app.get('/privacy-policy',(req,res)=>{
 
 // Ensure the correct path to the whatsapp.route file
 import whatsappRouter from './apps/routes/whatsapp.route';
+import scamRouter from './apps/routes/scam.route';
 
 
 app.use("/api/v1/whatsapp", whatsappRouter);
+app.use("/api/v1/scam",scamRouter)
 
 
 //Health check route
