@@ -1,7 +1,5 @@
 import { useState, useRef } from "react";
 import Head from "next/head";
-import axios from "axios";
-import LanguageSelector from "./_components/LanguageSelector";
 import AudioInput from "./_components/AudioInput";
 import TextInput from "./_components/TextInput";
 import InputSelector from "./_components/InputSelector";
@@ -19,23 +17,8 @@ export default function Home() {
   const [audioFile, setAudioFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [audioPlaying, setAudioPlaying] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("en");
   const fileInputRef = useRef(null);
-  const results = {
-    phishingLikelihood: "High",
-    confidenceScore: 95,
-    suspiciousIndicators: [
-      "Offers that seem too good to be true",
-      "Requesting sensitive information",
-      "Unusual requests or instructions",
-    ],
-    explanation:
-      "The message promises a large sum of money, which is a common tactic used in phishing attempts to lure victims. It also requests for a payment to collect the prize, which is a suspicious request. The message does not provide any legitimate source or organization, making it highly suspicious.",
-    safetyRecommendation:
-      "Do not respond to the message or send any money. Report the message to your service provider.",
-    isSafe: false,
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -46,18 +29,15 @@ export default function Home() {
       if (inputType === "text") {
         response = await post("scam/detect/text", {
           text: inputText,
-          // language: selectedLanguage,
         });
         console.log("response", JSON.parse(response.message));
       } else if (inputType === "url") {
         response = await post("scam/detect/link", {
           link: url,
-          // language: selectedLanguage,
         });
       } else if (inputType === "audio") {
         const formData = new FormData();
         formData.append("audio", audioFile);
-        // formData.append("language", selectedLanguage);
 
         response = await post("scam/detect/audio", formData, {
           headers: {
@@ -85,7 +65,6 @@ export default function Home() {
     try {
       const formData = new FormData();
       formData.append("audio", audioFile);
-      // formData.append("language", selectedLanguage);
 
       const response = await post("scam/detect/audio/quick", formData, {
         headers: {
@@ -145,11 +124,6 @@ export default function Home() {
               />
             )}
 
-            <LanguageSelector
-              selectedLanguage={selectedLanguage}
-              setSelectedLanguage={setSelectedLanguage}
-            />
-
             {inputType === "audio" ? (
               <div className="flex gap-2">
                 <button
@@ -157,7 +131,7 @@ export default function Home() {
                   disabled={isSubmitDisabled()}
                   className={`w-full !bg-green-600 text-white py-2 px-4 rounded-md !hover:bg-green-700 focus:outline-none focus:ring-2 !focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
-                  {loading ? "Analyzing..." : "Check for Scams"}
+                  {loading ? "Analyzing..." : "Check for Full Response  Scams"}
                 </button>
                 <button
                   type="button"
@@ -180,8 +154,7 @@ export default function Home() {
           </form>
         </div>
 
-        {result && <ResultCard result={result || results} />}
-
+        {result && <ResultCard result={result || {}} />}
         <HowItWorks />
       </main>
 
